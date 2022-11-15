@@ -10,9 +10,11 @@ html {
 }
 
 #button {
-  background-color: brown;
+  background-color: rgb(22, 22, 22);
   position: absolute;
   text-align: center;
+  color: white;
+  top: 20px;
   width: 100px;
   height: 40px;
   left: 70%;
