@@ -67,12 +67,10 @@ console.log("texture", texture);
 // texture.rotation = Math.PI;
 texture.wrapS = THREE.RepeatWrapping;
 texture.wrapT = THREE.RepeatWrapping;
-texture.repeat =new THREE.Vector2(1,-1);
+texture.repeat = new THREE.Vector2(1, -1);
 function playVideo() {
-  if (video.paused)
-   video.play();
-  else 
-    video.pause();
+  if (video.paused) video.play();
+  else video.pause();
 }
 window.playVideo = playVideo;
 
@@ -116,15 +114,27 @@ function loadModels(val) {
     const axisHelper = new THREE.AxesHelper(5);
     scene.add(axisHelper);
 
-    const light = new THREE.AmbientLight(0xffffff, 0.3); //两个值，颜色，强度
+    const light = new THREE.AmbientLight(0xffffff, 1); //两个值，颜色，强度
     scene.add(light);
 
-    const pointLight = new THREE.PointLight(0xffffff, 1, 150, 2); //四个值，颜色，强度，距离，衰减
-    pointLight.position.set(-1.5, -0, -1.5);
+    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight1.position.set(-0.752, 0.203, -0.867);
+    scene.add(directionalLight1);
+    // const directhelper1 = new THREE.DirectionalLightHelper(directionalLight1, 5);
+    // scene.add(directhelper1);
+
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight2.position.set(0.752, -0.203, 0.867);
+    scene.add(directionalLight2);
+    // const directhelper2 = new THREE.DirectionalLightHelper(directionalLight2, 5);
+    // scene.add(directhelper2);
+
+    const pointLight = new THREE.PointLight(0xffffff, 2, 150, 2); //四个值，颜色，强度，距离，衰减
+    pointLight.position.set(-1.5, -0, 1.5);
     scene.add(pointLight);
-    const sphereSize = 1;
-    const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
-    scene.add(pointLightHelper);
+    // const sphereSize = 1;
+    // const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
+    // scene.add(pointLightHelper);
 
     var screen = models.getObjectByName("screen");
     console.log(screen.material);
@@ -177,11 +187,12 @@ function clearScene() {
 // camera.position.z = 5;
 
 //屏幕自适应
-window.addEventListener("resize", onWindowResize, false);
-function onWindowResize() {
-  camera.aspect = canvas.clientWidth / canvas.clientHeight;
+// window.addEventListener("resize", onWindowResize, true);
+ window.onWindowResize= function() {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth/window.innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  
 }
 
 // 创建一个时钟对象Clock
