@@ -40,23 +40,35 @@ environment.load(
 
 //初始化控制器
 const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.autoRotate = true; //自动旋转
+controls.autoRotateSpeed = 0.5;
+controls.enablePan = true; //仅用相机平移
+controls.enableZoom = true; //相机缩放
+// controls.minPolarAngle = Math.PI / 3; //相机竖直旋转角度
+// controls.maxPolarAngle = Math.PI / 2; //相机竖直旋转角度
+// controls.minAzimuthAngle = -Math.PI / 2; //相机水平旋转角度
+// controls.maxAzimuthAngle = Math.PI / 2; //相机水平旋转角度
+controls.minDistance = 0.5;
+controls.maxDistance = 1;
+controls.dampingFactor = 1;
 // controls.autoRotate = true; //自动旋转
 
 //初始化性能检测器
-const stats = new Stats();
-document.body.appendChild(stats.dom);
+// const stats = new Stats();
+// document.body.appendChild(stats.dom);
 
 //加载模型
 const loader = new GLTFLoader();
 let i, x, y, z, m;
-i = canvas.clientWidth / canvas.clientHeight;
+i = window.innerWidth / window.innerHeight;
 var models;
-let mixer;
+
 
 //获取视频
 let video = document.createElement("video");
 video.src = "./img/video.mp4"; // 设置视频地址
-video.autoplay = "autoplay"; //要设置播放
+// video.autoplay = "autoplay"; //要设置播放
 video.loop = "loop";
 video.controls = "controls";
 console.log("video", video);
@@ -102,7 +114,7 @@ function loadModels(val) {
       let h = w * i;
       let Fov = (camera.fov * Math.PI) / 180;
       m = h / (f * Math.tan(Fov * 0.5));
-      camera.position.y = 2 * m + y / 2; //如果需要看正面则改为“0”，例如：看正对Z轴的面，则x和y是0
+      camera.position.y = 2 * m - y ; //如果需要看正面则改为“0”，例如：看正对Z轴的面，则x和y是0
       camera.position.z = 2 * m + z / 2;
       camera.position.x = 2 * m + x / 2;
 
@@ -111,8 +123,8 @@ function loadModels(val) {
       // camera.position.x = 0;
     }
 
-    const axisHelper = new THREE.AxesHelper(5);
-    scene.add(axisHelper);
+    // const axisHelper = new THREE.AxesHelper(5);
+    // scene.add(axisHelper);
 
     const light = new THREE.AmbientLight(0xffffff, 1); //两个值，颜色，强度
     scene.add(light);
@@ -144,39 +156,10 @@ function loadModels(val) {
     frame.material.depthWrite = true;
 
     scene.add(gltf.scene);
-
-    mixer = new THREE.AnimationMixer(models);
-    mixer.clipAction(gltf.animations[0]).play();
-    animate();
   });
 }
 
 window.loadModels = loadModels;
-
-//清空场景
-function clearScene() {
-  // cancelAnimationFrame(this.animationId);
-  scene.traverse((child) => {
-    if (child.material) {
-      child.material.dispose();
-    }
-    if (child.geometry) {
-      child.geometry.dispose();
-    }
-    child = null;
-  });
-  // this.sceneDomElement.innerHTML = '';
-  // this.renderer.forceContextLoss();
-  renderer.dispose();
-  scene.clear();
-  // this.flows = [];
-  // scene = null;
-  // this.camera = null;
-  // this.controls = null;
-  // renderer.domElement = null;
-  // renderer = null;
-  // this.sceneDomElement = null;
-}
 
 //默认立方体
 // const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -188,43 +171,22 @@ function clearScene() {
 
 //屏幕自适应
 // window.addEventListener("resize", onWindowResize, true);
- window.onWindowResize= function() {
+window.onWindowResize = function () {
   renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-  
-}
-
-// 创建一个时钟对象Clock
-var clock = new THREE.Clock();
-// 设置渲染频率为30FBS，也就是每秒调用渲染器render方法大约30次
-var FPS = 60;
-var renderT = 1 / FPS; //单位秒  间隔多长时间渲染渲染一次
-// 声明一个变量表示render()函数被多次调用累积时间
-// 如果执行一次renderer.render，timeS重新置0
-var timeS = 0;
+};
 
 render();
 function render() {
   requestAnimationFrame(render);
-  //.getDelta()方法获得两帧的时间间隔
-  var T = clock.getDelta();
-  timeS = timeS + T;
-  // requestAnimationFrame默认调用render函数60次，通过时间判断，降低renderer.render执行频率
-  if (timeS > renderT) {
-    // 控制台查看渲染器渲染方法的调用周期，也就是间隔时间是多少
-    // console.log(`调用.render时间间隔`, timeS * 1000 + '毫秒');
     renderer.render(scene, camera); //执行渲染操作
-    //renderer.render每执行一次，timeS置0
-    timeS = 0;
-    stats.update();
+    controls.update();
   }
-  // mixer.update(T);
-}
 
-function animate() {
-  render();
-  camera.updateProjectionMatrix();
-  controls.update();
-}
-animate();
+// function animate() {
+//   render();
+//   camera.updateProjectionMatrix();
+//   controls.update();
+// }
+// animate();
