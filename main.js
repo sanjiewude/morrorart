@@ -7,6 +7,14 @@ import { GLTFLoader } from "./js/GLTFLoader.js";
 import { OrbitControls } from "./js/OrbitControls.js";
 import { RGBELoader } from "./js/RGBELoader.js";
 
+import { Gradient } from './js/Gradient.js'
+
+// Create your instance
+const gradient = new Gradient()
+
+// Call `initGradient` with the selector to your canvas
+gradient.initGradient('#gradient-canvas')
+
 const canvas = document.getElementById("canvas");
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(

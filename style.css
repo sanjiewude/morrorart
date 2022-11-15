@@ -3,7 +3,7 @@ html {
 }
 
 #canvas {
-  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
   position: absolute;
   width: 100vw;
   height: 100vh;
@@ -28,4 +28,19 @@ html {
   background-color: aqua;
   /* width: 50px; */
   z-index: 100;
+}
+
+*{
+  overflow:hidden;
+}
+#gradient-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  --gradient-color-1: #1e1e1e;
+  --gradient-color-2: #cbcbcb;
+  --gradient-color-3: #171717;
+  --gradient-color-4: #585858;
 }
