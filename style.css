@@ -1,0 +1,28 @@
+html {
+  margin: 0;
+}
+
+#canvas {
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}
+
+#button {
+  background-color: brown;
+  position: absolute;
+  text-align: center;
+  width: 100px;
+  height: 40px;
+  left: 70%;
+  right: 50%;
+}
+
+
+#data {
+  position: absolute;
+  background-color: aqua;
+  /* width: 50px; */
+  z-index: 100;
+}
